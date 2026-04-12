@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Default Suite">
+    <parameter name="URL" value="https:lnw.com"/><!-- Defines the entire test suite. -->
+    <test thread-count="5" name="TestProjectNew">
+
+        <classes>                  <!-- Lists test classes to be executed. -->
+            <class name="TestNG.TestNGGrouping"/>
+        </classes>
+    </test>  <!-- Represents a group of test cases (like a module). -->
+</suite>

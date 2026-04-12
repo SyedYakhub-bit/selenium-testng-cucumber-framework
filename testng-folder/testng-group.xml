@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Default Suite">
+    <parameter name="URL" value="https:lnw.com"/>
+    <listeners>
+        <listener class-name="TestNG.TestNGListeners"/>
+    </listeners><!-- Defines the entire test suite. -->
+    <test thread-count="5" name="TestProjectNew">
+        
+        <groups>
+            <run>
+                <include name="Smoke"/>
+            </run>
+        </groups>
+        <classes>                  <!-- Lists test classes to be executed. -->
+
+            <class name="TestNG.TestNGMultipleTests"/>
+            <class name="TestNG.TestNGBasics"/>
+            <class name="TestNG.TestNGGrouping"/>
+            <class name="TestNG.TestNGAllAnnotations">
+                <methods>
+                    <include name="print.*"/>  <!-- Excludes the method "printHeight" from this class. -->
+                </methods>
+            </class>
+        </classes>
+    </test>  <!-- Represents a group of test cases (like a module). -->
+</suite>
