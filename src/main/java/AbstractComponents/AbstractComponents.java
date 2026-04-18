@@ -1,4 +1,4 @@
-package TestClasses.AbstractComponents;
+package AbstractComponents;
 
 import Framework.PageObjects.CartPage;
 import Framework.PageObjects.OrderPage;

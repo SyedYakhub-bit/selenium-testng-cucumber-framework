@@ -1,6 +1,6 @@
 package Framework.PageObjects;
 
-import TestClasses.AbstractComponents.AbstractComponents;
+import AbstractComponents.AbstractComponents;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
