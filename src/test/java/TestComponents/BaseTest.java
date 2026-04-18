@@ -1,13 +1,18 @@
 package TestComponents;
 
 import Framework.PageObjects.LandingPage;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.Duration;
@@ -15,45 +20,58 @@ import java.util.Map;
 import java.util.Properties;
 
 public class BaseTest {
-    public WebDriver driver;
-    public LandingPage landingPage;
-    Properties properties = new Properties();
+	public WebDriver driver;
+	public LandingPage landingPage;
+	Properties properties = new Properties();
 
-    public WebDriver driverInitializer() throws IOException {
+	public WebDriver driverInitializer() throws IOException {
 
-        FileInputStream fileInputStream = new FileInputStream(System.getProperty("user.dir") + "//src//main//java//Framework//Resources//global.properties");
-        properties.load(fileInputStream);
-        String browserName = properties.getProperty("browser");
+		FileInputStream fileInputStream = new FileInputStream(
+				System.getProperty("user.dir") + "//src//main//java//Framework//Resources//global.properties");
+		properties.load(fileInputStream);
+		String browserName = properties.getProperty("browser");
 
-        if (browserName.equalsIgnoreCase("chrome")) {
-            ChromeOptions options = new ChromeOptions();
-            options.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
-            options.setExperimentalOption("prefs", Map.of("credentials_enable_service", false, "profile.password_manager_enabled", false));
-            driver = new ChromeDriver(options);
+		if (browserName.equalsIgnoreCase("chrome")) {
+			ChromeOptions options = new ChromeOptions();
+			options.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
+			options.setExperimentalOption("prefs",
+					Map.of("credentials_enable_service", false, "profile.password_manager_enabled", false));
+			driver = new ChromeDriver(options);
 
-        } else if (browserName.equalsIgnoreCase("edge")) {
+		} else if (browserName.equalsIgnoreCase("edge")) {
 
-            EdgeOptions edgeOptions = new EdgeOptions();
-            edgeOptions.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
-            edgeOptions.setExperimentalOption("prefs", Map.of("credentials_enable_service", false, "profile.password_manager_enabled", false));
-            driver = new EdgeDriver(edgeOptions);
-        }
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        return driver;
+			EdgeOptions edgeOptions = new EdgeOptions();
+			edgeOptions.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
+			edgeOptions.setExperimentalOption("prefs",
+					Map.of("credentials_enable_service", false, "profile.password_manager_enabled", false));
+			driver = new EdgeDriver(edgeOptions);
+		}
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		return driver;
 
+	}
 
-    }
+	@BeforeMethod
+	public LandingPage launchApplication() throws IOException {
+		driver = driverInitializer();
+		landingPage = new LandingPage(driver);
+		landingPage.goTo();
+		return landingPage;
+	}
 
-    @BeforeMethod
-    public LandingPage launchApplication() throws IOException {
-        driver = driverInitializer();
-        landingPage = new LandingPage(driver);
-        landingPage.goTo();
-        return landingPage;
-    }
+	public String getScreenshot(String testName, WebDriver driver) throws IOException {
+		String fileName = testName + "_" + System.currentTimeMillis() + ".png";
+		TakesScreenshot ts = (TakesScreenshot) driver;
+		File source = ts.getScreenshotAs(OutputType.FILE);
+		String destinationPath = System.getProperty("user.dir") + "\\screenshots\\" + fileName;
+		FileUtils.copyFile(source, new File(destinationPath));
+		return destinationPath;
+	}
 
-public void tearDown(){
-    driver.quit();
-}
+	@AfterMethod
+	public void tearDown() {
+		driver.quit();
+	}
+
 }

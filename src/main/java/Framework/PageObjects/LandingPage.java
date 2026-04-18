@@ -7,44 +7,43 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class LandingPage extends AbstractComponents {
-    WebDriver driver;
+	WebDriver driver;
 
-    @FindBy(id = "userEmail")
-    WebElement userEmail;
+	@FindBy(id = "userEmail")
+	WebElement userEmail;
 
-    @FindBy(id = "userPassword")
-    WebElement userPassword;
+	@FindBy(id = "userPassword")
+	WebElement userPassword;
 
-    @FindBy(id = "login")
-    WebElement submitButton;
+	@FindBy(id = "login")
+	WebElement submitButton;
 
-    @FindBy(css = "div[class*='flyInOut']")
-    WebElement errorMessage;
+	@FindBy(css = "div[class*='flyInOut']")
+	WebElement errorMessage;
 
-    public LandingPage(WebDriver driver) {
-        super(driver);
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
-    }
+	public LandingPage(WebDriver driver) {
+		super(driver);
+		this.driver = driver;
+		PageFactory.initElements(driver, this);
+	}
 
+	public ProductCatalogue loginApplication(String email, String password) {
+		userEmail.sendKeys(email);
+		userPassword.sendKeys(password);
+		submitButton.click();
+		scrollToTopOfThePage();
+		return new ProductCatalogue(driver);
 
-    public ProductCatalogue loginApplication(String email, String password) {
-        userEmail.sendKeys(email);
-        userPassword.sendKeys(password);
-        submitButton.click();
-        scrollToTopOfThePage();
-        return new ProductCatalogue(driver);
+	}
 
-    }
+	public void goTo() {
+		driver.get("https://rahulshettyacademy.com/client");
+	}
 
-    public void goTo() {
-        driver.get("https://rahulshettyacademy.com/client");
-    }
+	public String getErrorMessage() {
 
-    public String getErrorMessage(){
-
-        waitForElementToAppear(errorMessage);
-        return errorMessage.getText();
-    }
+		waitForElementToAppear(errorMessage);
+		return errorMessage.getText();
+	}
 
 }

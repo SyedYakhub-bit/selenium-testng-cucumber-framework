@@ -13,7 +13,6 @@
             </run>
         </groups>
         <classes>                  <!-- Lists test classes to be executed. -->
-
             <class name="TestNG.TestNGMultipleTests"/>
             <class name="TestNG.TestNGBasics"/>
             <class name="TestNG.TestNGGrouping"/>

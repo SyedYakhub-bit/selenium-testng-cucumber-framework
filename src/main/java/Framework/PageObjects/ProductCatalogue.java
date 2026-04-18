@@ -11,35 +11,36 @@ import java.util.List;
 
 public class ProductCatalogue extends AbstractComponents {
 
-    WebDriver driver;
-    By productsBy = By.cssSelector(".mb-3");
-    By addToCart = By.cssSelector(".card-body button:last-of-type");
-    By toastMessage = By.cssSelector("#toast-container");
+	WebDriver driver;
+	By productsBy = By.cssSelector(".mb-3");
+	By addToCart = By.cssSelector(".card-body button:last-of-type");
+	By toastMessage = By.cssSelector("#toast-container");
 
-    @FindBy(css = ".mb-3")
-    List<WebElement> products;
+	@FindBy(css = ".mb-3")
+	List<WebElement> products;
 
-    public ProductCatalogue(WebDriver driver) {
-        super(driver);
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
-    }
+	public ProductCatalogue(WebDriver driver) {
+		super(driver);
+		this.driver = driver;
+		PageFactory.initElements(driver, this);
+	}
 
+	public List<WebElement> getProductList() {
+		waitForElementToBeVisible(productsBy);
+		return products;
+	}
 
-    public List<WebElement> getProductList() {
-        waitForElementToBeVisible(productsBy);
-        return products;
-    }
+	public WebElement getProductByName(String productName) {
+		return getProductList().stream()
+				.filter(p -> p.findElement(By.cssSelector("b")).getText().equalsIgnoreCase(productName)).findFirst()
+				.orElseThrow(() -> new RuntimeException("Product not found"));
+	}
 
-    public WebElement getProductByName(String productName) {
-        return getProductList().stream().filter(p -> p.findElement(By.cssSelector("b")).getText().equalsIgnoreCase(productName)).findFirst().orElseThrow(() -> new RuntimeException("Product not found"));
-    }
-
-    public void addProductToCart(String productName) throws InterruptedException {
-        WebElement product = getProductByName(productName);
-        product.findElement(addToCart).click();
-        scrollToBottomOfThePage();
-        waitForElementToBeVisible(toastMessage);
-        Thread.sleep(1200);
-    }
+	public void addProductToCart(String productName) throws InterruptedException {
+		WebElement product = getProductByName(productName);
+		product.findElement(addToCart).click();
+		scrollToBottomOfThePage();
+		waitForElementToBeVisible(toastMessage);
+		Thread.sleep(1200);
+	}
 }

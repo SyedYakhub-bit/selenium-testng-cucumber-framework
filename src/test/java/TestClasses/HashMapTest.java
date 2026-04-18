@@ -7,15 +7,16 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.HashMap;
 import java.util.List;
 
-public class SubmitOrderTest extends BaseTest {
+public class HashMapTest extends BaseTest {
 	String productName = "ZARA COAT 3";
 
 	@Test(dataProvider = "getData")
-	public void submitOrder(String email, String password) throws InterruptedException {
+	public void submitOrder(HashMap<String, String> input) throws InterruptedException {
 
-		ProductCatalogue productCatalogue = landingPage.loginApplication(email, password);
+		ProductCatalogue productCatalogue = landingPage.loginApplication(input.get("email"), input.get("password"));
 		List<WebElement> products = productCatalogue.getProductList();
 		System.out.println(products);
 		productCatalogue.addProductToCart(productName);
@@ -41,7 +42,13 @@ public class SubmitOrderTest extends BaseTest {
 
 	@DataProvider
 	public Object[][] getData() {
-		return new Object[][]{{"rahulshettyacademysyed@gmail.com", "Syed#2000"},
-				{"yakhub.1si19ee057@gmail.com", "Yakhub@12345"}};
+		HashMap<String, String> hashMap1 = new HashMap<>();
+		hashMap1.put("email", "rahulshettyacademysyed@gmail.com");
+		hashMap1.put("password", "Syed#2000");
+
+		HashMap<String, String> hashMap2 = new HashMap<>();
+		hashMap2.put("email", "yakhub.1si19ee057@gmail.com");
+		hashMap2.put("password", "Yakhub@12345");
+		return new Object[][]{{hashMap1}, {hashMap2}};
 	}
 }

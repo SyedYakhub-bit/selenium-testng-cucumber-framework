@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite parallel="tests" name="Suite">   <!-- Defines the entire test suite. -->
+    <listeners>
+        <listener class-name="TestComponents.Listeners"/>  <!-- Registers a listener for test events. -->
+    </listeners>
+    <test thread-count="5" name="Submit Order Test">
+        <groups>
+            <run>
+                <include name="ErrorHandling"/>
+            </run>
+        </groups>
+    </test>  <!-- Represents a group of test cases (like a module). -->
+    <test thread-count="5" name="Error Validation Test">
+        <classes>
+            <class name="TestClasses.ErrorValidationTest"/>
+        </classes>
+    </test>  <!-- Represents a group of test cases (like a module). -->
+</suite>

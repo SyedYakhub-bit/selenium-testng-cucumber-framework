@@ -6,19 +6,22 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class ConfirmMessage extends AbstractComponents {
+import java.util.List;
+
+public class OrderPage extends AbstractComponents {
 	WebDriver driver;
 
-	@FindBy(css = ".hero-primary")
-	WebElement confirmMessageText;
+	@FindBy(css = "tr td:nth-child(3)")
+	private List<WebElement> productNames;
 
-	public ConfirmMessage(WebDriver driver) {
+	public OrderPage(WebDriver driver) {
 		super(driver);
 		this.driver = driver;
 		PageFactory.initElements(driver, this);
 	}
 
-	public String getConfirmMessageText() {
-		return confirmMessageText.getText();
+	public Boolean verifyOrderDisplay(String productName) {
+		return productNames.stream().anyMatch(product -> product.getText().equalsIgnoreCase(productName));
 	}
+
 }
